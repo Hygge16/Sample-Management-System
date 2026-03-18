@@ -64,6 +64,11 @@ export default function Admin() {
       )
       .on(
         "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "records" },
+        () => load()
+      )
+      .on(
+        "postgres_changes",
         { event: "*", schema: "public", table: "notices" },
         () => load()
       )

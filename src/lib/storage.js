@@ -291,6 +291,7 @@ export async function transferRecord(recordId, newHolder) {
     const { error } = await supabase
       .from("records")
       .update({
+        applicant_name: newHolder,
         current_holder: newHolder,
         transfer_token: null,
         updated_at: new Date().toISOString(),
@@ -301,7 +302,7 @@ export async function transferRecord(recordId, newHolder) {
   }
   const records = getLocal(KEYS.RECORDS).map((r) =>
     (r.id === recordId || r.id === numId)
-      ? { ...r, currentHolder: newHolder, transferToken: null }
+      ? { ...r, applicantName: newHolder, currentHolder: newHolder, transferToken: null }
       : r
   );
   setLocal(KEYS.RECORDS, records);
