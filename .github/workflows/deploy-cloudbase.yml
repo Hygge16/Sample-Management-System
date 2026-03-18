@@ -1,0 +1,42 @@
+# 部署到腾讯云 CloudBase 静态托管
+# 参考：https://docs.cloudbase.net/hosting/cli-devops
+
+name: Deploy to CloudBase Static Hosting
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建项目
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_ADMIN_PASSWORD: ${{ secrets.VITE_ADMIN_PASSWORD }}
+        run: npm run build
+
+      - name: 安装 CloudBase CLI
+        run: npm install -g @cloudbase/cli
+
+      - name: 登录 CloudBase
+        run: tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+
+      - name: 部署到 CloudBase 静态托管
+        run: tcb hosting deploy ./dist /home -e ${{ secrets.TCB_ENV_ID }}
