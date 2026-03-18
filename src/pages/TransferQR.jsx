@@ -38,7 +38,8 @@ export default function TransferQR() {
   if (loading) return <div className="loading">加载中...</div>;
   if (!record) return <div className="page"><p className="page-subtitle">记录不存在或无法转借</p></div>;
 
-  const url = `${window.location.origin}/receive/${recordId}/${token}`;
+  const base = window.location.origin + (window.location.pathname || "/");
+  const url = `${base.replace(/\/$/, "")}#/receive/${recordId}/${token}`;
 
   return (
     <div className="page">

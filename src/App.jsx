@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 import Login from "./pages/Login";
@@ -24,7 +24,7 @@ function RequireAuth({ children, requireAdmin }) {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename={(() => { const b = import.meta.env.BASE_URL.replace(/\/$/, ""); return b === "." ? "" : b || ""; })()}>
+      <HashRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
           
@@ -41,7 +41,7 @@ function App() {
           <Route path="/logs" element={<RequireAuth requireAdmin><Logs /></RequireAuth>} />
           <Route path="/add" element={<RequireAuth requireAdmin><AddItem /></RequireAuth>} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
