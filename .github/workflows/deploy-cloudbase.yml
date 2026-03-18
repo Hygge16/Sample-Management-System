@@ -38,7 +38,10 @@ jobs:
         env:
           TCB_SECRET_ID: ${{ secrets.TCB_SECRET_ID }}
           TCB_SECRET_KEY: ${{ secrets.TCB_SECRET_KEY }}
-        run: npx -p @cloudbase/cli tcb login --apiKeyId "$TCB_SECRET_ID" --apiKey "$TCB_SECRET_KEY"
+        run: |
+          export TCB_SECRET_ID="$(echo -n "$TCB_SECRET_ID" | tr -d '\n\r' | xargs)"
+          export TCB_SECRET_KEY="$(echo -n "$TCB_SECRET_KEY" | tr -d '\n\r' | xargs)"
+          npx -p @cloudbase/cli tcb login --apiKeyId "$TCB_SECRET_ID" --apiKey "$TCB_SECRET_KEY"
 
       - name: 部署到 CloudBase 静态托管
         env:
