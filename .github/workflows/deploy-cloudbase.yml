@@ -32,7 +32,8 @@ jobs:
           VITE_ADMIN_PASSWORD: ${{ secrets.VITE_ADMIN_PASSWORD }}
         run: npm run build
 
-      - name: 登录并部署到 CloudBase
-        run: |
-          npx --yes @cloudbase/cli login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
-          npx --yes @cloudbase/cli hosting deploy ./dist /home -e ${{ secrets.TCB_ENV_ID }}
+      - name: 登录 CloudBase
+        run: npx -p @cloudbase/cli tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+
+      - name: 部署到 CloudBase 静态托管
+        run: npx -p @cloudbase/cli tcb hosting deploy ./dist /home -e ${{ secrets.TCB_ENV_ID }}
