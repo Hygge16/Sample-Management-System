@@ -66,8 +66,8 @@ tcb login
 # 3. 构建项目
 npm run build
 
-# 4. 部署到静态托管（将 ./dist 部署到云端 /home 路径）
-tcb hosting deploy ./dist /home -e 你的环境ID
+# 4. 部署到静态托管（将 ./dist 部署到云端根路径）
+tcb hosting deploy ./dist / -e 你的环境ID
 ```
 
 参数说明：
@@ -75,7 +75,7 @@ tcb hosting deploy ./dist /home -e 你的环境ID
 | 参数 | 说明 |
 |------|------|
 | `./dist` | 本地构建产物目录 |
-| `/home` | 云端目标路径（根目录） |
+| `/` | 云端目标路径（根目录） |
 | `-e` | CloudBase 环境 ID |
 
 ### 访问地址
@@ -84,14 +84,9 @@ tcb hosting deploy ./dist /home -e 你的环境ID
 
 ---
 
-## 方案二：腾讯云 Webify / CloudBase Git 导入
+## 方案二：腾讯云 Webify（备选）
 
-1. 打开 [Webify](https://webify.cloudbase.net/) 或 CloudBase 控制台的 Git 导入
-2. 使用 GitHub 登录 → 新建应用 → 选择仓库
-3. 构建命令：`npm run build`，输出目录：`dist`
-4. **若应用部署在子路径**（如 `xxx.tcloudbaseapp.com/Sample-Management-System/`），需添加环境变量：
-   - `VITE_BASE_PATH` = `/Sample-Management-System/`
-5. 配置其他环境变量后部署
+若 GitHub Actions 无法使用，可用 Webify Git 导入。构建命令 `npm run build`，输出目录 `dist`。
 
 ---
 
@@ -108,4 +103,3 @@ tcb hosting deploy ./dist /home -e 你的环境ID
 | `VITE_SUPABASE_URL` | Supabase 项目 URL |
 | `VITE_SUPABASE_ANON_KEY` | Supabase 匿名密钥 |
 | `VITE_ADMIN_PASSWORD` | 管理员密码（默认 123456） |
-| `VITE_BASE_PATH` | 部署子路径（如 `/Sample-Management-System/`），部署到根路径时可不设 |

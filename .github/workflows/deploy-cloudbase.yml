@@ -47,4 +47,4 @@ jobs:
       - name: 部署到 CloudBase 静态托管
         env:
           TCB_ENV_ID: ${{ secrets.TCB_ENV_ID }}
-        run: npx -p @cloudbase/cli tcb hosting deploy ./dist /home -e "$TCB_ENV_ID"
+        run: npx -p @cloudbase/cli tcb hosting deploy ./dist / -e "$TCB_ENV_ID"
