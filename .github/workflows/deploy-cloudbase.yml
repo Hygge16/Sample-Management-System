@@ -11,6 +11,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      CI: "true"
 
     steps:
       - name: 检出代码
@@ -33,7 +35,12 @@ jobs:
         run: npm run build
 
       - name: 登录 CloudBase
-        run: npx -p @cloudbase/cli tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+        env:
+          TCB_SECRET_ID: ${{ secrets.TCB_SECRET_ID }}
+          TCB_SECRET_KEY: ${{ secrets.TCB_SECRET_KEY }}
+        run: npx -p @cloudbase/cli tcb login --apiKeyId "$TCB_SECRET_ID" --apiKey "$TCB_SECRET_KEY"
 
       - name: 部署到 CloudBase 静态托管
-        run: npx -p @cloudbase/cli tcb hosting deploy ./dist /home -e ${{ secrets.TCB_ENV_ID }}
+        env:
+          TCB_ENV_ID: ${{ secrets.TCB_ENV_ID }}
+        run: npx -p @cloudbase/cli tcb hosting deploy ./dist /home -e "$TCB_ENV_ID"
