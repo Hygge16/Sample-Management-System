@@ -24,7 +24,7 @@ function RequireAuth({ children, requireAdmin }) {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "") || "/"}>
+      <BrowserRouter basename={(() => { const b = import.meta.env.BASE_URL.replace(/\/$/, ""); return b === "." ? "" : b || ""; })()}>
         <Routes>
           <Route path="/login" element={<Login />} />
           
