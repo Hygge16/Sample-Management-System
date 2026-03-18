@@ -82,6 +82,16 @@ tcb hosting deploy ./dist / -e 你的环境ID
 
 部署完成后，在 CloudBase 控制台 → 静态网站托管 → 可查看默认访问域名（如 `xxx.tcloudbaseapp.com`），国内可直接访问。
 
+### 转借/直接访问路由需配置 404 回退
+
+扫码转借会打开 `/receive/xxx/yyy` 等路径，需让 CloudBase 对 404 返回 `index.html`，由前端路由处理：
+
+1. 进入 CloudBase 控制台 → 静态网站托管
+2. 找到「设置」或「基础配置」
+3. 将**错误文档** / **404 页面** 设置为 `index.html`
+
+若控制台无此选项，项目已生成 `404.html`（与 index.html 相同），部分环境会自动使用。
+
 ---
 
 ## 方案二：腾讯云 Webify（备选）
