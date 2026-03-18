@@ -51,7 +51,8 @@ export default function ReceiveTransfer() {
 
   const handleConfirm = async () => {
     if (!record || !username) return;
-    await transferRecord(record.id, username);
+    const fromHolder = record.currentHolder ?? record.applicantName;
+    await transferRecord(record.id, username, fromHolder);
     const time = new Date().toLocaleString();
     await addLog({
       action: `样品 ${record.itemId} 由 ${record.currentHolder ?? record.applicantName} 转交给 ${username}`,

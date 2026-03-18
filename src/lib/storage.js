@@ -40,6 +40,8 @@ const toRecord = (r) =>
         applicantName: r.applicant_name ?? r.applicantName ?? "匿名",
         currentHolder: r.current_holder ?? r.currentHolder ?? null,
         transferToken: r.transfer_token ?? r.transferToken ?? null,
+        transferredFrom: r.transferred_from ?? r.transferredFrom ?? null,
+        transferredAt: r.transferred_at ?? r.transferredAt ?? null,
         quantity: r.quantity,
         purpose: r.purpose,
         returnDate: r.return_date,
@@ -285,8 +287,9 @@ export async function setTransferToken(recordId, token) {
   setLocal(KEYS.RECORDS, records);
 }
 
-export async function transferRecord(recordId, newHolder) {
+export async function transferRecord(recordId, newHolder, fromHolder) {
   const numId = /^\d+$/.test(String(recordId)) ? Number(recordId) : recordId;
+  const transferTime = new Date().toLocaleString();
   if (isSupabaseEnabled()) {
     const { error } = await supabase
       .from("records")
@@ -294,6 +297,8 @@ export async function transferRecord(recordId, newHolder) {
         applicant_name: newHolder,
         current_holder: newHolder,
         transfer_token: null,
+        transferred_from: fromHolder ?? null,
+        transferred_at: transferTime,
         updated_at: new Date().toISOString(),
       })
       .eq("id", numId);
@@ -302,7 +307,7 @@ export async function transferRecord(recordId, newHolder) {
   }
   const records = getLocal(KEYS.RECORDS).map((r) =>
     (r.id === recordId || r.id === numId)
-      ? { ...r, applicantName: newHolder, currentHolder: newHolder, transferToken: null }
+      ? { ...r, applicantName: newHolder, currentHolder: newHolder, transferToken: null, transferredFrom: fromHolder, transferredAt: transferTime }
       : r
   );
   setLocal(KEYS.RECORDS, records);

@@ -125,8 +125,8 @@ export default function MyRecords() {
           <div className="record-meta">
             <p>
               <strong>样品ID</strong> {record.itemId} · <strong>数量</strong> {record.quantity}
-              {(record.currentHolder && record.currentHolder !== record.applicantName) && (
-                <> · <strong>当前持有人</strong> {record.currentHolder}</>
+              {record.transferredFrom && (
+                <> · <strong>接收于</strong> {record.transferredFrom}</>
               )}
             </p>
             <p><strong>用途</strong> {record.purpose}</p>
@@ -144,7 +144,10 @@ export default function MyRecords() {
                 {isOverdue(record) ? "已逾期" : record.status}
               </span>
             </p>
-            <p><small>{record.createdAt}</small></p>
+            <p><small>
+              {record.createdAt}
+              {record.transferredAt && ` · 转借于 ${record.transferredAt}`}
+            </small></p>
           </div>
 
           {record.status === "已批准" && !record.noReturn && isHolder(record) && (

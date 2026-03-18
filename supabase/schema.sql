@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS records (
   applicant_name TEXT NOT NULL,
   current_holder TEXT,
   transfer_token TEXT,
+  transferred_from TEXT,
+  transferred_at TEXT,
   quantity INTEGER NOT NULL,
   purpose TEXT NOT NULL,
   return_date TEXT NOT NULL,
@@ -31,6 +33,7 @@ CREATE TABLE IF NOT EXISTS records (
 -- 若表已存在，添加 applicant_name 列：ALTER TABLE records ADD COLUMN IF NOT EXISTS applicant_name TEXT DEFAULT '匿名';
 -- 若表已存在，添加 no_return 列：ALTER TABLE records ADD COLUMN IF NOT EXISTS no_return BOOLEAN NOT NULL DEFAULT FALSE;
 -- 若表已存在，添加转借字段：ALTER TABLE records ADD COLUMN IF NOT EXISTS current_holder TEXT; ALTER TABLE records ADD COLUMN IF NOT EXISTS transfer_token TEXT;
+-- 若表已存在，添加转借来源/时间：ALTER TABLE records ADD COLUMN IF NOT EXISTS transferred_from TEXT; ALTER TABLE records ADD COLUMN IF NOT EXISTS transferred_at TEXT;
 
 -- 通知表（新申请提醒管理员）
 CREATE TABLE IF NOT EXISTS notices (

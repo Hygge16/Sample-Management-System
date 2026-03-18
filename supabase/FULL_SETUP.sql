@@ -51,6 +51,8 @@ ALTER TABLE items ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE records ADD COLUMN IF NOT EXISTS applicant_name TEXT;
 ALTER TABLE records ADD COLUMN IF NOT EXISTS current_holder TEXT;
 ALTER TABLE records ADD COLUMN IF NOT EXISTS transfer_token TEXT;
+ALTER TABLE records ADD COLUMN IF NOT EXISTS transferred_from TEXT;
+ALTER TABLE records ADD COLUMN IF NOT EXISTS transferred_at TEXT;
 ALTER TABLE records ADD COLUMN IF NOT EXISTS no_return BOOLEAN NOT NULL DEFAULT FALSE;
 
 -- 6. 启用 Realtime（管理员可实时收到新申请）
