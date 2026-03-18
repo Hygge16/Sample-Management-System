@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../lib/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { isSupabaseEnabled } from "../lib/supabase";
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const [username, setUsername] = useState("");
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
@@ -16,7 +18,7 @@ export default function Login() {
       return;
     }
     login("user", username.trim());
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   const handleAdminLogin = () => {
@@ -27,7 +29,7 @@ export default function Login() {
       return;
     }
     login("admin", "管理员");
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   return (

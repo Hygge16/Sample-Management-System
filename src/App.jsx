@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 import Login from "./pages/Login";
@@ -16,7 +16,8 @@ import ReceiveTransfer from "./pages/ReceiveTransfer";
 
 function RequireAuth({ children, requireAdmin }) {
   const { role } = useAuth();
-  if (!role) return <Navigate to="/login" replace />;
+  const location = useLocation();
+  if (!role) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   if (requireAdmin && role !== "admin") return <Navigate to="/" replace />;
   return children;
 }
