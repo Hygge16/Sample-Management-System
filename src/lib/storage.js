@@ -255,35 +255,38 @@ export async function addRecord(record) {
 }
 
 export async function getRecordById(id) {
+  const numId = /^\d+$/.test(String(id)) ? Number(id) : id;
   if (isSupabaseEnabled()) {
     const { data, error } = await supabase
       .from("records")
       .select("*")
-      .eq("id", id)
+      .eq("id", numId)
       .single();
     if (error && error.code !== "PGRST116") throw error;
     return toRecord(data);
   }
-  const r = getLocal(KEYS.RECORDS).find((x) => x.id === id);
+  const r = getLocal(KEYS.RECORDS).find((x) => x.id == id || x.id === numId);
   return r ? { ...r, currentHolder: r.currentHolder ?? r.applicantName } : null;
 }
 
 export async function setTransferToken(recordId, token) {
+  const numId = /^\d+$/.test(String(recordId)) ? Number(recordId) : recordId;
   if (isSupabaseEnabled()) {
     const { error } = await supabase
       .from("records")
       .update({ transfer_token: token, updated_at: new Date().toISOString() })
-      .eq("id", recordId);
+      .eq("id", numId);
     if (error) throw error;
     return;
   }
   const records = getLocal(KEYS.RECORDS).map((r) =>
-    r.id === recordId ? { ...r, transferToken: token } : r
+    (r.id === recordId || r.id === numId) ? { ...r, transferToken: token } : r
   );
   setLocal(KEYS.RECORDS, records);
 }
 
 export async function transferRecord(recordId, newHolder) {
+  const numId = /^\d+$/.test(String(recordId)) ? Number(recordId) : recordId;
   if (isSupabaseEnabled()) {
     const { error } = await supabase
       .from("records")
@@ -292,12 +295,12 @@ export async function transferRecord(recordId, newHolder) {
         transfer_token: null,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", recordId);
+      .eq("id", numId);
     if (error) throw error;
     return;
   }
   const records = getLocal(KEYS.RECORDS).map((r) =>
-    r.id === recordId
+    (r.id === recordId || r.id === numId)
       ? { ...r, currentHolder: newHolder, transferToken: null }
       : r
   );

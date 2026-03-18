@@ -17,8 +17,9 @@ export default function TransferQR() {
     if (!username) return;
     (async () => {
       const r = await getRecordById(recordId);
-      const holder = r?.currentHolder ?? r?.applicantName;
-      if (!r || r.status !== "已批准" || holder !== username) {
+      const holder = (r?.currentHolder ?? r?.applicantName ?? "").trim();
+      const u = (username ?? "").trim();
+      if (!r || r.status !== "已批准" || holder !== u) {
         setRecord(null);
         setLoading(false);
         return;
