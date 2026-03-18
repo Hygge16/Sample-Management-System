@@ -6,7 +6,7 @@ export default function Home() {
   const { role, username, logout } = useAuth();
 
   const userTiles = [
-    { path: "/scan", icon: "📦", label: "扫码借用" },
+    { path: "/scan", icon: "📦", label: "样品借用" },
     { path: "/records", icon: "📋", label: "我的记录" },
   ];
 
@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <div className="page">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-        <h1 className="page-title" style={{ margin: 0 }}>仓库管理系统</h1>
+        <h1 className="page-title" style={{ margin: 0 }}>研发样品管理系统</h1>
         <button 
           style={{ padding: "6px 12px", fontSize: "14px", background: "transparent", color: "#8e8e93", border: "1px solid #d2d2d7" }} 
           onClick={logout}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useAuth } from "../lib/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { isSupabaseEnabled } from "../lib/supabase";
@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <div className="page" style={{ paddingTop: "60px", textAlign: "center" }}>
       <h1 className="page-title" style={{ fontSize: "32px", marginBottom: "8px" }}>
-        仓库管理系统
+        研发样品管理系统
       </h1>
       <p className="page-subtitle" style={{ marginBottom: "40px" }}>
         请选择您的身份
