@@ -11,7 +11,7 @@
 ## 2. 执行数据库脚本
 
 1. 在 Supabase 中打开 **SQL Editor**
-2. 复制 `supabase/schema.sql` 内容并执行
+2. 复制 `supabase/FULL_SETUP.sql` 完整内容并执行（一次性完成所有表、列、Realtime、存储桶初始化）
 3. 若 Realtime 相关语句报错，可在 **Database → Replication** 中手动为 `records`、`notices` 表开启 Realtime
 
 ## 3. 配置环境变量
@@ -30,7 +30,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 npm run dev
 ```
 
-部署到 Vercel / Netlify 时，在项目设置中配置上述环境变量，他人即可通过部署链接访问。
+部署到 CloudBase 时，在 GitHub Secrets 中配置 `VITE_SUPABASE_URL`、`VITE_SUPABASE_ANON_KEY`，他人即可通过部署链接访问。详见 `DEPLOY_CN.md`。
 
 ## 5. 行为说明
 
