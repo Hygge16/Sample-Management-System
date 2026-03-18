@@ -104,6 +104,15 @@ tcb hosting deploy ./dist / -e 你的环境ID
 
 | 变量名 | 说明 |
 |--------|------|
-| `VITE_SUPABASE_URL` | Supabase 项目 URL |
-| `VITE_SUPABASE_ANON_KEY` | Supabase 匿名密钥 |
+| `VITE_SUPABASE_URL` | Supabase 项目 URL（**必填**，否则数据仅存本地、不同设备不同步） |
+| `VITE_SUPABASE_ANON_KEY` | Supabase 匿名密钥（**必填**） |
 | `VITE_ADMIN_PASSWORD` | 管理员密码（默认 123456） |
+
+### 数据不同步时排查
+
+1. 打开部署后的登录页，查看提示：
+   - **✓ 云端同步**：Supabase 已生效，数据应多端一致
+   - **⚠ 本地数据**：Supabase 未配置，需检查 GitHub Secrets
+2. 在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中确认：
+   - `VITE_SUPABASE_URL`、`VITE_SUPABASE_ANON_KEY` 已添加且名称正确
+3. 修改 Secrets 后必须**重新部署**（推送一次或执行空提交触发）

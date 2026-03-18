@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../lib/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { isSupabaseEnabled } from "../lib/supabase";
 
 export default function Login() {
   const { login } = useAuth();
@@ -36,6 +37,9 @@ export default function Login() {
       </h1>
       <p className="page-subtitle" style={{ marginBottom: "40px" }}>
         请选择您的身份
+      </p>
+      <p style={{ fontSize: "12px", color: "#8e8e93", marginBottom: "24px" }}>
+        {isSupabaseEnabled() ? "✓ 云端同步" : "⚠ 本地数据（未配置 Supabase，各设备数据独立）"}
       </p>
 
       <div style={{ maxWidth: "320px", margin: "0 auto", textAlign: "left" }}>
