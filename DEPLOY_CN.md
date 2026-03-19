@@ -1,12 +1,14 @@
-# 国内部署指南
+# 部署指南
 
-将应用部署到国内可访问的平台，无需 VPN。
+## Vercel（海外，推荐）
 
-> 参考文档：[腾讯云 CloudBase 与 Git 平台 CI/CD 集成](https://docs.cloudbase.net/hosting/cli-devops)
+1. 登录 [Vercel](https://vercel.com)，导入 GitHub 仓库
+2. 在项目设置中添加环境变量：`VITE_SUPABASE_URL`、`VITE_SUPABASE_ANON_KEY`、`VITE_ADMIN_PASSWORD`（可选）
+3. 部署：每次推送自动构建，`vercel.json` 已配置 SPA 路由回退
 
 ---
 
-## 方案一：腾讯云 CloudBase 静态托管（推荐）
+## 腾讯云 CloudBase 静态托管（国内）
 
 CloudBase 静态托管支持国内 CDN 加速，配合 GitHub Actions 可实现推送即部署。
 
@@ -88,13 +90,13 @@ tcb hosting deploy ./dist / -e 你的环境ID
 
 ---
 
-## 方案二：腾讯云 Webify（备选）
+## 腾讯云 Webify（备选）
 
 若 GitHub Actions 无法使用，可用 Webify Git 导入。构建命令 `npm run build`，输出目录 `dist`。
 
 ---
 
-## 方案三：阿里云 OSS / 腾讯云 COS
+## 阿里云 OSS / 腾讯云 COS
 
 手动构建后上传 `dist` 目录到对象存储，开启静态网站托管。详见原文档。
 

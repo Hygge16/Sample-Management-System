@@ -1,16 +1,35 @@
-# React + Vite
+# 研发样品管理系统
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite 构建的样品借用管理 PWA，支持 Supabase 云端同步与本地存储。
 
-Currently, two official plugins are available:
+## 功能
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 样品浏览、扫码、申请借用
+- 转借流程（二维码扫码接收）
+- 借用记录、归还、上报丢失
+- 管理员审批、库存管理、操作日志
 
-## React Compiler
+## 快速开始
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+## 配置与部署
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| 文档 | 说明 |
+|------|------|
+| [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) | Supabase 数据库配置 |
+| [DEPLOY_CN.md](./DEPLOY_CN.md) | 部署指南（CloudBase / Vercel） |
+
+### 部署方式
+
+- **Vercel**：连接 GitHub 仓库即可自动部署，`vercel.json` 已配置 SPA 路由
+- **CloudBase**：使用 `.github/workflows/deploy-cloudbase.yml`，推送 `main` 分支自动部署
+
+## 技术栈
+
+- React 19 + Vite 7
+- React Router (Hash)
+- Supabase（可选，未配置时使用 localStorage）
