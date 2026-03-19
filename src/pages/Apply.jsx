@@ -7,6 +7,7 @@ import {
   addNotice,
 } from "../lib/storage";
 import { useAuth } from "../lib/AuthContext";
+import BackButton from "../components/BackButton";
 
 export default function Apply() {
   const { id } = useParams();
@@ -80,8 +81,14 @@ export default function Apply() {
 
   return (
     <div className="page">
-      <h1 className="page-title">申请借用</h1>
-      <p className="page-subtitle">{item.name}</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <BackButton />
+        <div style={{ textAlign: "center", flex: 1 }}>
+          <h1 className="page-title" style={{ margin: 0 }}>申请借用</h1>
+          <p className="page-subtitle" style={{ margin: "4px 0 0" }}>{item.name}</p>
+        </div>
+        <div style={{ width: 72 }} />
+      </div>
 
       <div className="card">
         <div className="form-group">

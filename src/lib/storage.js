@@ -48,6 +48,7 @@ const toRecord = (r) =>
         noReturn: r.no_return ?? r.noReturn ?? false,
         status: r.status,
         createdAt: r.created_at,
+        updatedAt: r.updated_at ?? r.updatedAt ?? null,
       }
     : null;
 
@@ -322,8 +323,9 @@ export async function updateRecordStatus(id, status) {
     if (error) throw error;
     return;
   }
+  const now = new Date().toISOString();
   const records = getLocal(KEYS.RECORDS).map((r) =>
-    r.id === id ? { ...r, status } : r
+    r.id === id ? { ...r, status, updatedAt: now } : r
   );
   setLocal(KEYS.RECORDS, records);
 }

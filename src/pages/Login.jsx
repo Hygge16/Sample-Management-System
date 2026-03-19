@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../lib/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { isSupabaseEnabled } from "../lib/supabase";

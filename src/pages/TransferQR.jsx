@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { getRecordById, getItemById, setTransferToken } from "../lib/storage";
 import { useAuth } from "../lib/AuthContext";
+import BackButton from "../components/BackButton";
 
 export default function TransferQR() {
   const { recordId } = useParams();
@@ -43,6 +44,9 @@ export default function TransferQR() {
 
   return (
     <div className="page">
+      <div style={{ marginBottom: "12px" }}>
+        <BackButton />
+      </div>
       <h1 className="page-title">转借二维码</h1>
       <p className="page-subtitle">
         请让对方扫描此二维码完成接收

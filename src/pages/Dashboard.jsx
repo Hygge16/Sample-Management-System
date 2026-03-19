@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getItems, getRecords, getAvailableStock } from "../lib/storage";
+import { exportInventoryExcel } from "../lib/exportExcel";
 import { ITEM_PLACEHOLDER } from "../lib/constants";
+import BackButton from "../components/BackButton";
 
 export default function Dashboard() {
   const [items, setItems] = useState([]);
@@ -22,6 +24,11 @@ export default function Dashboard() {
     })();
   }, []);
 
+  const handleExport = () => {
+    const name = `库存与借用记录_${new Date().toISOString().slice(0, 10)}.xlsx`;
+    exportInventoryExcel(items, records, name);
+  };
+
   const getStats = (itemId) => {
     const related = records.filter((r) => r.itemId === itemId);
     const pending = related.filter((r) => r.status === "待审批").length;
@@ -41,8 +48,20 @@ export default function Dashboard() {
 
   return (
     <div className="page">
-      <h1 className="page-title">库存总览</h1>
-      <p className="page-subtitle">各样品库存与借用统计</p>
+      <div style={{ position: "relative", marginBottom: "16px", minHeight: 80 }}>
+        <div style={{ position: "absolute", left: 0, top: 0 }}>
+          <BackButton />
+        </div>
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <button className="btn-primary" onClick={handleExport}>
+            导出 Excel
+          </button>
+        </div>
+        <div style={{ textAlign: "center", width: "100%", paddingTop: 4 }}>
+          <h1 className="page-title" style={{ margin: 0 }}>库存总览</h1>
+          <p className="page-subtitle" style={{ margin: "4px 0 0" }}>各样品库存与借用统计</p>
+        </div>
+      </div>
 
       <div className="dashboard-grid">
         {items.map((item) => {

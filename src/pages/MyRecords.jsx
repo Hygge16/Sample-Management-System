@@ -8,6 +8,7 @@ import {
   addNotice,
 } from "../lib/storage";
 import { useAuth } from "../lib/AuthContext";
+import BackButton from "../components/BackButton";
 
 export default function MyRecords() {
   const navigate = useNavigate();
@@ -115,8 +116,14 @@ export default function MyRecords() {
 
   return (
     <div className="page">
-      <h1 className="page-title">我的借用记录</h1>
-      <p className="page-subtitle">查看并归还已批准的借用</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <BackButton />
+        <div style={{ textAlign: "center", flex: 1 }}>
+          <h1 className="page-title" style={{ margin: 0 }}>我的借用记录</h1>
+          <p className="page-subtitle" style={{ margin: "4px 0 0" }}>查看并归还已批准的借用</p>
+        </div>
+        <div style={{ width: 72 }} />
+      </div>
 
       {records.length === 0 && <p className="page-subtitle">暂无记录</p>}
 

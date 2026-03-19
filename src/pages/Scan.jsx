@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getItems, getAvailableStock } from "../lib/storage";
 import { ITEM_PLACEHOLDER } from "../lib/constants";
+import BackButton from "../components/BackButton";
 
 export default function Scan() {
   const navigate = useNavigate();
@@ -42,8 +43,14 @@ export default function Scan() {
 
   return (
     <div className="page">
-      <h1 className="page-title">选择样品</h1>
-      <p className="page-subtitle">点击样品卡片申请借用</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <BackButton />
+        <div style={{ textAlign: "center", flex: 1 }}>
+          <h1 className="page-title" style={{ margin: 0 }}>选择样品</h1>
+          <p className="page-subtitle" style={{ margin: "4px 0 0" }}>点击样品卡片申请借用</p>
+        </div>
+        <div style={{ width: 72 }} />
+      </div>
 
       <div className="form-group">
         <label>搜索样品</label>
@@ -59,27 +66,29 @@ export default function Scan() {
         <p className="page-subtitle">暂无匹配的样品</p>
       )}
 
-      {filteredItems.map((item) => (
-        <div
-          key={item.id}
-          className="card item-card"
-          onClick={() => navigate(`/item/${item.id}`)}
-        >
-          <div className="item-thumb">
-            <img
-              src={item.imageUrl || ITEM_PLACEHOLDER}
-              alt={item.name}
-              onError={(e) => {
-                e.target.src = ITEM_PLACEHOLDER;
-              }}
-            />
+      <div className="scan-grid">
+        {filteredItems.map((item) => (
+          <div
+            key={item.id}
+            className="scan-cell"
+            onClick={() => navigate(`/item/${item.id}`)}
+          >
+            <div className="scan-cell-thumb">
+              <img
+                src={item.imageUrl || ITEM_PLACEHOLDER}
+                alt={item.name}
+                onError={(e) => {
+                  e.target.src = ITEM_PLACEHOLDER;
+                }}
+              />
+            </div>
+            <div className="scan-cell-info">
+              <span className="scan-cell-name">{item.name}</span>
+              <span className="scan-cell-stock">可用 {item.availableStock} / {item.totalStock}</span>
+            </div>
           </div>
-          <div className="item-info">
-            <h3>{item.name}</h3>
-            <p>可用 {item.availableStock} / 共 {item.totalStock}</p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

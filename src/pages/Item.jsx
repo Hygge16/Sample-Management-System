@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { getItemById, getAvailableStock, uploadImage, updateItemImage } from "../lib/storage";
 import { ITEM_PLACEHOLDER } from "../lib/constants";
+import BackButton from "../components/BackButton";
 
 export default function Item() {
   const { id } = useParams();
@@ -52,10 +53,20 @@ export default function Item() {
   const total = item ? (item.totalStock ?? item.stock ?? 0) : 0;
 
   if (loading) return <div className="loading">加载中...</div>;
-  if (!item) return <div className="page"><p className="page-subtitle">样品不存在</p></div>;
+  if (!item) return (
+    <div className="page">
+      <div style={{ marginBottom: "12px" }}>
+        <BackButton />
+      </div>
+      <p className="page-subtitle">样品不存在</p>
+    </div>
+  );
 
   return (
     <div className="page">
+      <div style={{ marginBottom: "12px" }}>
+        <BackButton />
+      </div>
       <div className="card item-detail">
         <div className="item-hero" style={{ position: "relative" }}>
           <img

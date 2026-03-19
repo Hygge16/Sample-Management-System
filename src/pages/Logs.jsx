@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getLogs } from "../lib/storage";
+import BackButton from "../components/BackButton";
 
 export default function Logs() {
   const [logs, setLogs] = useState([]);
@@ -19,8 +20,14 @@ export default function Logs() {
 
   return (
     <div className="page">
-      <h1 className="page-title">操作日志</h1>
-      <p className="page-subtitle">系统操作记录</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <BackButton />
+        <div style={{ textAlign: "center", flex: 1 }}>
+          <h1 className="page-title" style={{ margin: 0 }}>操作日志</h1>
+          <p className="page-subtitle" style={{ margin: "4px 0 0" }}>系统操作记录</p>
+        </div>
+        <div style={{ width: 72 }} />
+      </div>
 
       {logs.map((log) => (
         <div key={log.id} className="card">

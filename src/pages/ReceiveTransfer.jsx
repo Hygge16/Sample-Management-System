@@ -8,6 +8,7 @@ import {
   addNotice,
 } from "../lib/storage";
 import { useAuth } from "../lib/AuthContext";
+import BackButton from "../components/BackButton";
 
 export default function ReceiveTransfer() {
   const { recordId, token } = useParams();
@@ -71,6 +72,9 @@ export default function ReceiveTransfer() {
   if (error) {
     return (
       <div className="page">
+        <div style={{ marginBottom: "12px" }}>
+          <BackButton />
+        </div>
         <p className="page-subtitle" style={{ color: "#ff3b30" }}>{error}</p>
         <button className="btn-secondary" onClick={() => navigate("/records")}>
           返回
@@ -83,6 +87,9 @@ export default function ReceiveTransfer() {
 
   return (
     <div className="page">
+      <div style={{ marginBottom: "12px" }}>
+        <BackButton />
+      </div>
       <h1 className="page-title">确认接收</h1>
       <p className="page-subtitle">请确认您已收到实物后再点击接收</p>
 
