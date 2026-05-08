@@ -154,11 +154,38 @@ export async function addItem(item) {
   setLocal(KEYS.ITEMS, items);
 }
 
+const DELETE_BLOCK_STATUSES = ["待审批", "已批准"];
+
+/** 若该样品存在待审批或借用中记录则不可删除 */
+export async function deleteItem(itemId) {
+  const allRecords = await getRecords();
+  const related = allRecords.filter((r) => r.itemId === itemId);
+  if (related.some((r) => DELETE_BLOCK_STATUSES.includes(r.status))) {
+    throw new Error("该样品仍有待审批或借用中的记录，请先处理后再删除");
+  }
+
+  if (isSupabaseEnabled()) {
+    const { error } = await supabase.from("items").delete().eq("id", itemId);
+    if (error) throw error;
+    await removeNoticesByItemId(itemId);
+    return;
+  }
+
+  const items = getLocal(KEYS.ITEMS).filter((i) => i.id !== itemId);
+  setLocal(KEYS.ITEMS, items);
+  const records = getLocal(KEYS.RECORDS).filter((r) => r.itemId !== itemId);
+  setLocal(KEYS.RECORDS, records);
+  const notices = getLocal(KEYS.NOTICES).filter(
+    (n) => !n.message?.includes(String(itemId))
+  );
+  setLocal(KEYS.NOTICES, notices);
+}
+
 export async function uploadImage(file) {
   if (isSupabaseEnabled()) {
     const ext = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("images")
       .upload(fileName, file);
     if (error) throw error;
@@ -194,6 +221,69 @@ export async function updateItemImage(id, imageUrl) {
       setLocal(KEYS.ITEMS, items);
     }
   }
+}
+
+/**
+ * 管理员更新样品信息（名称、可用库存、总库存、图片）
+ * @param {string} itemId
+ * @param {{ name?: string, stock?: number, totalStock?: number, imageUrl?: string | null }} patch
+ */
+export async function updateItem(itemId, patch) {
+  const existing = await getItemById(itemId);
+  if (!existing) throw new Error("样品不存在");
+
+  let stock = getAvailableStock(existing);
+  let total = Number(existing.totalStock ?? existing.stock ?? 0);
+  let nm = existing.name;
+  let imageUrl = existing.imageUrl ?? null;
+
+  if (patch.name !== undefined) {
+    nm = String(patch.name).trim();
+    if (!nm) throw new Error("名称不能为空");
+  }
+  if (patch.stock !== undefined) {
+    const s = Number(patch.stock);
+    if (Number.isNaN(s) || s < 0) throw new Error("可用库存无效");
+    stock = s;
+  }
+  if (patch.totalStock !== undefined) {
+    const t = Number(patch.totalStock);
+    if (Number.isNaN(t) || t < 0) throw new Error("总库存无效");
+    total = t;
+  }
+  if (stock > total) {
+    throw new Error("可用库存不能大于总库存");
+  }
+  if (patch.imageUrl !== undefined) {
+    const u = patch.imageUrl;
+    imageUrl = u == null || u === "" ? null : String(u).trim() || null;
+  }
+
+  if (isSupabaseEnabled()) {
+    const { error } = await supabase
+      .from("items")
+      .update({
+        name: nm,
+        stock,
+        total_stock: total,
+        image_url: imageUrl,
+      })
+      .eq("id", itemId);
+    if (error) throw error;
+    return;
+  }
+
+  const items = getLocal(KEYS.ITEMS);
+  const idx = items.findIndex((i) => i.id === itemId);
+  if (idx < 0) throw new Error("样品不存在");
+  items[idx] = {
+    ...items[idx],
+    name: nm,
+    stock,
+    totalStock: total,
+    imageUrl,
+  };
+  setLocal(KEYS.ITEMS, items);
 }
 
 // ============ Records ============

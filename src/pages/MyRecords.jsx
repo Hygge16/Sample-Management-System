@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getRecords,
@@ -31,7 +31,7 @@ export default function MyRecords() {
     return due.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0);
   };
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const r = await getRecords();
       // 显示申请人或当前持有人为当前用户的记录
@@ -48,11 +48,11 @@ export default function MyRecords() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   const handleReturn = async (record) => {
     if (record.noReturn) {

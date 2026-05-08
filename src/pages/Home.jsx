@@ -14,7 +14,7 @@ export default function Home() {
     { path: "/dashboard", icon: "📊", label: "库存总览" },
     { path: "/admin", icon: "✅", label: "管理员审批" },
     { path: "/logs", icon: "📝", label: "操作日志" },
-    { path: "/add", icon: "➕", label: "新增样品" },
+    { path: "/add", icon: "⚙️", label: "库存配置" },
   ];
 
   const tiles = role === "admin" ? [...userTiles, ...adminTiles] : userTiles;

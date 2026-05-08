@@ -1,23 +1,21 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [role, setRole] = useState(null); // 'user' | 'admin' | null
-  const [username, setUsername] = useState("");
+function readSavedAuth() {
+  const savedRole = localStorage.getItem("auth_role");
+  const savedName = localStorage.getItem("auth_username") || "";
+  return {
+    role: savedRole || null,
+    username: savedRole ? savedName : "",
+  };
+}
 
-  useEffect(() => {
-    const savedRole = localStorage.getItem("auth_role");
-    const savedName = localStorage.getItem("auth_username");
-    if (savedRole) {
-      setRole(savedRole);
-      if (savedName) setUsername(savedName);
-    }
-  }, []);
+export function AuthProvider({ children }) {
+  const [{ role, username }, setAuth] = useState(readSavedAuth);
 
   const login = (selectedRole, name) => {
-    setRole(selectedRole);
-    setUsername(name);
+    setAuth({ role: selectedRole, username: name || "" });
     localStorage.setItem("auth_role", selectedRole);
     if (name) {
       localStorage.setItem("auth_username", name);
@@ -27,8 +25,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    setRole(null);
-    setUsername("");
+    setAuth({ role: null, username: "" });
     localStorage.removeItem("auth_role");
     localStorage.removeItem("auth_username");
   };
@@ -40,6 +37,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook colocated with provider
 export function useAuth() {
   return useContext(AuthContext);
 }

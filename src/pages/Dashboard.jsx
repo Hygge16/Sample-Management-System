@@ -66,7 +66,7 @@ export default function Dashboard() {
       <div className="dashboard-grid">
         {items.map((item) => {
           const stats = getStats(item.id);
-          const stock = Number(item.stock) ?? Number(item.totalStock) ?? 0;
+          const stock = Number(item.totalStock ?? item.stock ?? 0);
           const available =
             getAvailableStock(item) || stock - stats.approved + stats.returned;
 
